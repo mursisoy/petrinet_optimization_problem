@@ -9,8 +9,7 @@ PRE =  sparse(ii,1:length(ii),ones(1,length(ii)));
 POST =  sparse(jj,1:length(jj),ones(1,length(jj)));
 
 % Initial marking
-m0 = zeros(1,numel(T.Q));
-m0(T.R0) = 1;
+m0 = ones(1,numel(T.Q))*sparse(T.R0(:),T.R0(:), 1,numel(T.Q),numel(T.Q));
 
 V = zeros(numel(T.props), numel(T.obs))
 for i=1:length(T.props)
