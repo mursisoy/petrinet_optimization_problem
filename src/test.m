@@ -1,34 +1,42 @@
+%% Test 1 
 
-[PRE, POST, m0, V] = petriNetBuilder(T);
-C = POST - PRE;
+%% Solve
+clear
+load('test1/test1.mat')
+openfig('test1/test1.fig')
 
-formula='A&B';
-constraints =2;
-[A,b] = formula2constraints(formula, constraints);
-[restriction_number, ~] = size(A); 
+[PRE, POST, C, m0, V, adj] = petriNetBuilder(T);
+formula='!A&B';
+nr_props = 2;
+[mf, sigma, compliance, fval,exitflag,output] = findPaths(C, V, m0, formula, nr_props);
+save('test1/test1_results.mat', 'PRE', 'POST', 'C', 'm0', 'V', 'adj', 'mf', 'sigma', 'compliance', 'fval','exitflag','output')
+%%
+clear
+reportSolution('test1')
+
+%% Test 2
+clear
+load('test2/test2.mat')
+openfig('test2/test2.fig')
+
+[PRE, POST, C, m0, V, adj] = petriNetBuilder(T);
+formula='A&B&!C';
+nr_props = 3;
+[mf, sigma, compliance, fval,exitflag,output] = findPaths(C, V, m0, formula, nr_props);
+save('test2/test2_results.mat', 'PRE', 'POST', 'C', 'm0', 'V', 'adj', 'mf', 'sigma', 'compliance', 'fval','exitflag','output')
+%%
+clear
+reportSolution('test2')
+%% Test 3
+clear
+load('test3/test3.mat')
+openfig('test3/test3.fig')
+
+[PRE, POST, C, m0, V, adj] = petriNetBuilder(T);
+formula='!A&!B&!C&D';
+nr_props = 4;
+[mf, sigma, compliance, fval,exitflag,output] = findPaths(C, V, m0, formula, nr_props);
+save('test3/test3_results.mat', 'PRE', 'POST', 'C', 'm0', 'V', 'adj', 'mf', 'sigma', 'compliance', 'fval','exitflag','output')
 %% 
-
-[m_size,sigma_size] = size(C); 
-
-n = m_size + sigma_size + constraints;
-
-f = [ zeros(1,m_size) ones(1,sigma_size) zeros(1, constraints) ];
-
-N = numel(T.R0) + 1;
-
-Aineq = [
-    zeros(restriction_number, m_size), zeros(restriction_number,sigma_size), A;
-    V,  zeros(numel(T.props), sigma_size), -N*ones(numel(T.props),constraints);
-    -V,  zeros(numel(T.props), sigma_size), eye(numel(T.props),constraints);
-];
-
-bineq = [b;zeros(numel(T.props),1);zeros(numel(T.props),1)];
-
-Aeq = [eye(m_size,m_size), -C, zeros(m_size, constraints)];
-beq = m0';
-%% 
-[x,fval,exitflag,output] = cplexmilp(f,Aineq,bineq,Aeq,beq) 
-
-
-
-
+clear
+reportSolution('test3')
