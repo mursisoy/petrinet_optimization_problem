@@ -4,9 +4,9 @@ function reportSolution(environment)
 
 
 close all
-load(sprintf('%s/environment.mat', environment))
-openfig(sprintf('%s/environment.fig', environment))
-load(sprintf('%s/results.mat', environment))
+load(sprintf('%s/environment.mat', environment));
+openfig(sprintf('%s/environment.fig', environment));
+load(sprintf('%s/results.mat', environment));
 
 
 % Find triggers
@@ -32,14 +32,14 @@ end
 % For each place, draw random points inside the triangle
 % Source: https://blogs.sas.com/content/iml/2020/10/19/random-points-in-triangle.html
 for i=1:length(mp)
-    u = rand(2,mn(i))
-    idx = sum(u)>1
+    u = rand(2,mn(i));
+    idx = sum(u)>1;
     if nnz(idx) > 0
-        u(:,idx) = 1 - u(:,idx)
+        u(:,idx) = 1 - u(:,idx);
     end
-    a = T.Vert{mp(i)}(:,2) - T.Vert{mp(i)}(:,1)
-    b = T.Vert{mp(i)}(:,3) - T.Vert{mp(i)}(:,1)
-    w = kron(u(1,:),a) + kron(u(2,:),b)
+    a = T.Vert{mp(i)}(:,2) - T.Vert{mp(i)}(:,1);
+    b = T.Vert{mp(i)}(:,3) - T.Vert{mp(i)}(:,1);
+    w = kron(u(1,:),a) + kron(u(2,:),b);
     r =  T.Vert{mp(i)}(:,1) + w;
     scatter(r(1,:),r(2,:),'MarkerEdgeColor','blue')
 end
